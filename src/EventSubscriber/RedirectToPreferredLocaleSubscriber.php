@@ -35,7 +35,9 @@ final class RedirectToPreferredLocaleSubscriber implements EventSubscriberInterf
         private array $enabledLocales,
         private ?string $defaultLocale = null,
     ) {
+		error_log(sprintf('>>> Entering __construct($urlGenerator=%s,$enabledLocales=%s,$defaultLocale=%s)', is_scalar($urlGenerator) ? $urlGenerator : gettype($urlGenerator), is_scalar($enabledLocales) ? $enabledLocales : gettype($enabledLocales), is_scalar($defaultLocale) ? $defaultLocale : gettype($defaultLocale)));
         if (empty($this->enabledLocales)) {
+			error_log(sprintf('Throwing new from __construct($urlGenerator=%s,$enabledLocales=%s,$defaultLocale=%s)', is_scalar($urlGenerator) ? $urlGenerator : gettype($urlGenerator), is_scalar($enabledLocales) ? $enabledLocales : gettype($enabledLocales), is_scalar($defaultLocale) ? $defaultLocale : gettype($defaultLocale)));
             throw new \UnexpectedValueException('The list of supported locales must not be empty.');
         }
 
@@ -50,10 +52,13 @@ final class RedirectToPreferredLocaleSubscriber implements EventSubscriberInterf
         // returns the first element when no appropriate language is found
         array_unshift($this->enabledLocales, $this->defaultLocale);
         $this->enabledLocales = array_unique($this->enabledLocales);
+		error_log(sprintf('<<< Exiting __construct($urlGenerator=%s,$enabledLocales=%s,$defaultLocale=%s)', is_scalar($urlGenerator) ? $urlGenerator : gettype($urlGenerator), is_scalar($enabledLocales) ? $enabledLocales : gettype($enabledLocales), is_scalar($defaultLocale) ? $defaultLocale : gettype($defaultLocale)));
     }
 
     public static function getSubscribedEvents(): array
     {
+		error_log(sprintf('>>> Entering getSubscribedEvents()'));
+		error_log(sprintf('<<< Exiting getSubscribedEvents()'));
         return [
             KernelEvents::REQUEST => 'onKernelRequest',
         ];
@@ -61,6 +66,7 @@ final class RedirectToPreferredLocaleSubscriber implements EventSubscriberInterf
 
     public function onKernelRequest(RequestEvent $event): void
     {
+		error_log(sprintf('>>> Entering onKernelRequest($event=%s)', is_scalar($event) ? $event : gettype($event)));
         $request = $event->getRequest();
 
         // Ignore sub-requests and all URLs but the homepage
@@ -81,5 +87,6 @@ final class RedirectToPreferredLocaleSubscriber implements EventSubscriberInterf
             $response = new RedirectResponse($this->urlGenerator->generate('homepage', ['_locale' => $preferredLanguage]));
             $event->setResponse($response);
         }
+		error_log(sprintf('<<< Exiting onKernelRequest($event=%s)', is_scalar($event) ? $event : gettype($event)));
     }
 }

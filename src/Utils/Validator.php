@@ -26,11 +26,14 @@ final class Validator
 {
     public function validateUsername(?string $username): string
     {
+		error_log(sprintf('>>> Entering validateUsername($username=%s)', is_scalar($username) ? $username : gettype($username)));
         if (empty($username)) {
+			error_log(sprintf('Throwing InvalidArgumentException from validateUsername($username=%s)', is_scalar($username) ? $username : gettype($username)));
             throw new InvalidArgumentException('The username can not be empty.');
         }
 
         if (1 !== preg_match('/^[a-z_]+$/', $username)) {
+		error_log(sprintf('<<< Exiting validateUsername($username=%s)', is_scalar($username) ? $username : gettype($username)));
             throw new InvalidArgumentException('The username must contain only lowercase latin characters and underscores.');
         }
 
@@ -52,11 +55,14 @@ final class Validator
 
     public function validateEmail(?string $email): string
     {
+		error_log(sprintf('>>> Entering validateEmail($email=%s)', is_scalar($email) ? $email : gettype($email)));
         if (empty($email)) {
+			error_log(sprintf('Throwing InvalidArgumentException from validateEmail($email=%s)', is_scalar($email) ? $email : gettype($email)));
             throw new InvalidArgumentException('The email can not be empty.');
         }
 
         if (null === u($email)->indexOf('@')) {
+		error_log(sprintf('<<< Exiting validateEmail($email=%s)', is_scalar($email) ? $email : gettype($email)));
             throw new InvalidArgumentException('The email should look like a real email.');
         }
 
@@ -65,7 +71,10 @@ final class Validator
 
     public function validateFullName(?string $fullName): string
     {
+		error_log(sprintf('>>> Entering validateFullName($fullName=%s)', is_scalar($fullName) ? $fullName : gettype($fullName)));
         if (empty($fullName)) {
+			error_log(sprintf('Throwing InvalidArgumentException from validateFullName($fullName=%s)', is_scalar($fullName) ? $fullName : gettype($fullName)));
+		error_log(sprintf('<<< Exiting validateFullName($fullName=%s)', is_scalar($fullName) ? $fullName : gettype($fullName)));
             throw new InvalidArgumentException('The full name can not be empty.');
         }
 

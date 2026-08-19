@@ -34,6 +34,8 @@ final readonly class CheckRequirementsSubscriber implements EventSubscriberInter
     public function __construct(
         private EntityManagerInterface $entityManager,
     ) {
+	error_log(sprintf('>>> Entering __construct($entityManager=%s)', is_scalar($entityManager) ? $entityManager : gettype($entityManager)));
+	error_log(sprintf('<<< Exiting __construct($entityManager=%s)', is_scalar($entityManager) ? $entityManager : gettype($entityManager)));
     }
 
     // Event Subscribers must define this method to declare the events they
@@ -42,6 +44,8 @@ final readonly class CheckRequirementsSubscriber implements EventSubscriberInter
     // See https://symfony.com/doc/current/event_dispatcher.html#creating-an-event-subscriber
     public static function getSubscribedEvents(): array
     {
+		error_log(sprintf('>>> Entering getSubscribedEvents()'));
+		error_log(sprintf('<<< Exiting getSubscribedEvents()'));
         return [
             // Errors are one of the events defined by the Console. See the
             // rest here: https://symfony.com/doc/current/components/console/events.html
@@ -58,6 +62,7 @@ final readonly class CheckRequirementsSubscriber implements EventSubscriberInter
      */
     public function handleConsoleError(ConsoleErrorEvent $event): void
     {
+		error_log(sprintf('>>> Entering handleConsoleError($event=%s)', is_scalar($event) ? $event : gettype($event)));
         $commandNames = ['doctrine:fixtures:load', 'doctrine:database:create', 'doctrine:schema:create', 'doctrine:database:drop'];
 
         if ($event->getCommand() && \in_array($event->getCommand()->getName(), $commandNames, true)) {
@@ -66,6 +71,7 @@ final readonly class CheckRequirementsSubscriber implements EventSubscriberInter
                 $io->error('This command requires to have the "sqlite3" PHP extension enabled because, by default, the Symfony Demo application uses SQLite to store its information.');
             }
         }
+		error_log(sprintf('<<< Exiting handleConsoleError($event=%s)', is_scalar($event) ? $event : gettype($event)));
     }
 
     /**
@@ -74,6 +80,7 @@ final readonly class CheckRequirementsSubscriber implements EventSubscriberInter
      */
     public function handleKernelException(ExceptionEvent $event): void
     {
+		error_log(sprintf('>>> Entering handleKernelException($event=%s)', is_scalar($event) ? $event : gettype($event)));
         $exception = $event->getThrowable();
         // Since any exception thrown during a Twig template rendering is wrapped
         // in a Twig_Error_Runtime, we must get the original exception.
@@ -86,6 +93,7 @@ final readonly class CheckRequirementsSubscriber implements EventSubscriberInter
         if ($isDriverException && $this->isSQLitePlatform() && !\extension_loaded('sqlite3')) {
             $event->setThrowable(new \Exception('PHP extension "sqlite3" must be enabled because, by default, the Symfony Demo application uses SQLite to store its information.'));
         }
+		error_log(sprintf('<<< Exiting handleKernelException($event=%s)', is_scalar($event) ? $event : gettype($event)));
     }
 
     /**
@@ -93,8 +101,10 @@ final readonly class CheckRequirementsSubscriber implements EventSubscriberInter
      */
     private function isSQLitePlatform(): bool
     {
+		error_log(sprintf('>>> Entering isSQLitePlatform()'));
         $databasePlatform = $this->entityManager->getConnection()->getDatabasePlatform();
 
+		error_log(sprintf('<<< Exiting isSQLitePlatform()'));
         return $databasePlatform instanceof SQLitePlatform;
     }
 }
