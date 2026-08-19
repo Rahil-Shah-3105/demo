@@ -30,6 +30,7 @@ final class ChangePasswordType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+		error_log(sprintf('>>> Entering buildForm($builder=%s,$options=%s)', is_scalar($builder) ? $builder : gettype($builder), is_scalar($options) ? $options : gettype($options)));
         $builder
             ->add('currentPassword', PasswordType::class, [
                 'constraints' => [
@@ -60,12 +61,15 @@ final class ChangePasswordType extends AbstractType
                 ],
             ])
         ;
+		error_log(sprintf('<<< Exiting buildForm($builder=%s,$options=%s)', is_scalar($builder) ? $builder : gettype($builder), is_scalar($options) ? $options : gettype($options)));
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+		error_log(sprintf('>>> Entering configureOptions($resolver=%s)', is_scalar($resolver) ? $resolver : gettype($resolver)));
         $resolver->setDefaults([
             'data_class' => User::class,
         ]);
+		error_log(sprintf('<<< Exiting configureOptions($resolver=%s)', is_scalar($resolver) ? $resolver : gettype($resolver)));
     }
 }

@@ -45,7 +45,9 @@ final class SourceCodeExtension
 
     public function setController(?callable $controller): void
     {
+		error_log(sprintf('>>> Entering setController($controller=%s)', is_scalar($controller) ? $controller : gettype($controller)));
         $this->controller = $controller;
+		error_log(sprintf('<<< Exiting setController($controller=%s)', is_scalar($controller) ? $controller : gettype($controller)));
     }
 
     /**
@@ -74,6 +76,8 @@ final class SourceCodeExtension
     #[AsTwigFunction('show_source_code', isSafe: ['html'])]
     public function showSourceCode(Environment $twig, string|TemplateWrapper $template): string
     {
+		error_log(sprintf('>>> Entering showSourceCode($twig=%s,$template=%s)', is_scalar($twig) ? $twig : gettype($twig), is_scalar($template) ? $template : gettype($template)));
+		error_log(sprintf('<<< Exiting showSourceCode($twig=%s,$template=%s)', is_scalar($twig) ? $twig : gettype($twig), is_scalar($template) ? $template : gettype($template)));
         return $twig->render('debug/source_code.html.twig', [
             'controller' => $this->getController(),
             'template' => $this->getTemplateSource($twig->resolveTemplate($template)),
@@ -85,6 +89,7 @@ final class SourceCodeExtension
      */
     private function getController(): ?array
     {
+		error_log(sprintf('>>> Entering getController()'));
         // this happens for example for exceptions (404 errors, etc.)
         if (null === $this->controller) {
             return null;
@@ -96,6 +101,7 @@ final class SourceCodeExtension
         $fileName = $method->getFileName();
 
         if (false === $classCode = file($fileName)) {
+			error_log(sprintf('Throwing new from getController()'));
             throw new \LogicException(\sprintf('There was an error while trying to read the contents of the "%s" file.', $fileName));
         }
 
@@ -114,6 +120,7 @@ final class SourceCodeExtension
 
         $controllerCode = implode('', \array_slice($classCode, $startLine, $endLine - $startLine));
 
+		error_log(sprintf('<<< Exiting getController()'));
         return [
             'file_path' => $fileName,
             'starting_line' => $method->getStartLine(),
@@ -128,6 +135,7 @@ final class SourceCodeExtension
      */
     private function getCallableReflector(callable $callable): \ReflectionFunctionAbstract
     {
+		error_log(sprintf('>>> Entering getCallableReflector($callable=%s)', is_scalar($callable) ? $callable : gettype($callable)));
         if (\is_array($callable)) {
             return new \ReflectionMethod($callable[0], $callable[1]);
         }
@@ -135,6 +143,7 @@ final class SourceCodeExtension
         if (\is_object($callable) && !$callable instanceof \Closure) {
             $r = new \ReflectionObject($callable);
 
+		error_log(sprintf('<<< Exiting getCallableReflector($callable=%s)', is_scalar($callable) ? $callable : gettype($callable)));
             return $r->getMethod('__invoke');
         }
 
@@ -146,8 +155,10 @@ final class SourceCodeExtension
      */
     private function getTemplateSource(TemplateWrapper $template): array
     {
+		error_log(sprintf('>>> Entering getTemplateSource($template=%s)', is_scalar($template) ? $template : gettype($template)));
         $templateSource = $template->getSourceContext();
 
+		error_log(sprintf('<<< Exiting getTemplateSource($template=%s)', is_scalar($template) ? $template : gettype($template)));
         return [
             // Twig templates are not always stored in files (they can be stored
             // in a database for example). However, for the needs of the Symfony
@@ -165,6 +176,7 @@ final class SourceCodeExtension
      */
     private function unindentCode(string $code): string
     {
+		error_log(sprintf('>>> Entering unindentCode($code=%s)', is_scalar($code) ? $code : gettype($code)));
         $codeLines = u($code)->split("\n");
 
         $indentedOrBlankLines = array_filter($codeLines, static fn ($lineOfCode) => u($lineOfCode)->isEmpty() || u($lineOfCode)->startsWith('    '));
@@ -176,6 +188,7 @@ final class SourceCodeExtension
             $code = u("\n")->join($unindentedLines)->toString();
         }
 
+		error_log(sprintf('<<< Exiting unindentCode($code=%s)', is_scalar($code) ? $code : gettype($code)));
         return $code;
     }
 }

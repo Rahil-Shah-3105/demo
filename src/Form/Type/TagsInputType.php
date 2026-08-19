@@ -33,10 +33,13 @@ final class TagsInputType extends AbstractType
     public function __construct(
         private readonly TagRepository $tags,
     ) {
+	error_log(sprintf('>>> Entering __construct($tags=%s)', is_scalar($tags) ? $tags : gettype($tags)));
+	error_log(sprintf('<<< Exiting __construct($tags=%s)', is_scalar($tags) ? $tags : gettype($tags)));
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+		error_log(sprintf('>>> Entering buildForm($builder=%s,$options=%s)', is_scalar($builder) ? $builder : gettype($builder), is_scalar($options) ? $options : gettype($options)));
         $builder
             // The Tag collection must be transformed into a comma separated string.
             // We could create a custom transformer to do Collection <-> string in one step,
@@ -45,15 +48,20 @@ final class TagsInputType extends AbstractType
             ->addModelTransformer(new CollectionToArrayTransformer(), true)
             ->addModelTransformer(new TagArrayToStringTransformer($this->tags), true)
         ;
+		error_log(sprintf('<<< Exiting buildForm($builder=%s,$options=%s)', is_scalar($builder) ? $builder : gettype($builder), is_scalar($options) ? $options : gettype($options)));
     }
 
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
+		error_log(sprintf('>>> Entering buildView($view=%s,$form=%s,$options=%s)', is_scalar($view) ? $view : gettype($view), is_scalar($form) ? $form : gettype($form), is_scalar($options) ? $options : gettype($options)));
         $view->vars['tags'] = $this->tags->findAll();
+		error_log(sprintf('<<< Exiting buildView($view=%s,$form=%s,$options=%s)', is_scalar($view) ? $view : gettype($view), is_scalar($form) ? $form : gettype($form), is_scalar($options) ? $options : gettype($options)));
     }
 
     public function getParent(): string
     {
+		error_log(sprintf('>>> Entering getParent()'));
+		error_log(sprintf('<<< Exiting getParent()'));
         return TextType::class;
     }
 }

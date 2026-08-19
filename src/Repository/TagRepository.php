@@ -30,6 +30,8 @@ class TagRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
+		error_log(sprintf('>>> Entering __construct($registry=%s)', is_scalar($registry) ? $registry : gettype($registry)));
         parent::__construct($registry, Tag::class);
+		error_log(sprintf('<<< Exiting __construct($registry=%s)', is_scalar($registry) ? $registry : gettype($registry)));
     }
 }

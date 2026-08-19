@@ -31,6 +31,7 @@ final class CommentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+		error_log(sprintf('>>> Entering buildForm($builder=%s,$options=%s)', is_scalar($builder) ? $builder : gettype($builder), is_scalar($options) ? $options : gettype($options)));
         // By default, form fields include the 'required' attribute, which enables
         // the client-side form validation. This means that you can't test the
         // server-side validation errors from the browser. To temporarily disable
@@ -42,12 +43,15 @@ final class CommentType extends AbstractType
                 'help' => 'help.comment_content',
             ])
         ;
+		error_log(sprintf('<<< Exiting buildForm($builder=%s,$options=%s)', is_scalar($builder) ? $builder : gettype($builder), is_scalar($options) ? $options : gettype($options)));
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+		error_log(sprintf('>>> Entering configureOptions($resolver=%s)', is_scalar($resolver) ? $resolver : gettype($resolver)));
         $resolver->setDefaults([
             'data_class' => Comment::class,
         ]);
+		error_log(sprintf('<<< Exiting configureOptions($resolver=%s)', is_scalar($resolver) ? $resolver : gettype($resolver)));
     }
 }

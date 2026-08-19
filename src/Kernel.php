@@ -25,6 +25,8 @@ class Kernel extends BaseKernel
      */
     private function getAllowedEnvs(): array
     {
+		error_log(sprintf('>>> Entering getAllowedEnvs()'));
+		error_log(sprintf('<<< Exiting getAllowedEnvs()'));
         return ['dev', 'prod', 'test'];
     }
 }

@@ -19,10 +19,14 @@ final class CommentCreatedEvent extends Event
     public function __construct(
         protected Comment $comment,
     ) {
+	error_log(sprintf('>>> Entering __construct($comment=%s)', is_scalar($comment) ? $comment : gettype($comment)));
+	error_log(sprintf('<<< Exiting __construct($comment=%s)', is_scalar($comment) ? $comment : gettype($comment)));
     }
 
     public function getComment(): Comment
     {
+		error_log(sprintf('>>> Entering getComment()'));
+		error_log(sprintf('<<< Exiting getComment()'));
         return $this->comment;
     }
 }
