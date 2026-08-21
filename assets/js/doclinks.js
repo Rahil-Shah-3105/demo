@@ -1,19 +1,28 @@
+const logger = console;
 'use strict';
 
 // Wraps some elements in anchor tags referencing to the Symfony documentation
 document.addEventListener('DOMContentLoaded', function() {
+	logger.debug('>>> Entering addEventListener()');
     const modalElt = document.querySelector('#sourceCodeModal');
     if (!modalElt) {
+		logger.debug(`addEventListener(): modalElt → ${modalElt}`);
         return;
     }
     const controllerCode = modalElt.querySelector('code.php');
     const templateCode = modalElt.querySelector('code.twig');
+	logger.debug(`addEventListener(): controllerCode → ${controllerCode}`);
+	logger.debug(`addEventListener(): templateCode → ${templateCode}`);
 
+	logger.debug('<<< Exiting addEventListener()');
     function anchor(url, content) {
+		logger.debug(`>>> Entering anchor(url=${url},content=${content})`);
         return '<a class="doclink" target="_blank" href="' + url + '">' + content + '</a>';
     }
 
     function wrap(content, links) {
+		logger.debug(`>>> Entering wrap(content=${content},links=${links})`);
+		logger.debug(`<<< Exiting wrap(content=${content},links=${links})`);
         return content.replace(
             new RegExp(Object.keys(links).join('|'), 'g'),
             token => anchor(links[token], token)

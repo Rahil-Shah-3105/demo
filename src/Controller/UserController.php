@@ -40,10 +40,12 @@ final class UserController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
     ): Response {
+		error_log(sprintf('>>> Entering edit($user=%s,$request=%s,$entityManager=%s)', is_scalar($user) ? $user : gettype($user), is_scalar($request) ? $request : gettype($request), is_scalar($entityManager) ? $entityManager : gettype($entityManager)));
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+			$__logStart = microtime(true);
             $entityManager->flush();
 
             $this->addFlash('success', 'user.updated_successfully');
@@ -51,6 +53,7 @@ final class UserController extends AbstractController
             return $this->redirectToRoute('user_edit', [], Response::HTTP_SEE_OTHER);
         }
 
+		error_log(sprintf('<<< Exiting edit($user=%s,$request=%s,$entityManager=%s)', is_scalar($user) ? $user : gettype($user), is_scalar($request) ? $request : gettype($request), is_scalar($entityManager) ? $entityManager : gettype($entityManager)));
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form,
@@ -64,17 +67,20 @@ final class UserController extends AbstractController
         EntityManagerInterface $entityManager,
         Security $security,
     ): Response {
+		error_log(sprintf('>>> Entering changePassword($user=%s,$request=%s,$entityManager=%s,$security=%s)', is_scalar($user) ? $user : gettype($user), is_scalar($request) ? $request : gettype($request), is_scalar($entityManager) ? $entityManager : gettype($entityManager), is_scalar($security) ? $security : gettype($security)));
         $form = $this->createForm(ChangePasswordType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+			error_log(sprintf('changePassword($user,$request,$entityManager,$security)=%s,%s,%s,%s: database query executed in %s ms', is_scalar($user) ? $user : gettype($user), is_scalar($request) ? $request : gettype($request), is_scalar($entityManager) ? $entityManager : gettype($entityManager), is_scalar($security) ? $security : gettype($security), round((microtime(true) - $__logStart) * 1000)));
 
             // The logout method applies an automatic protection against CSRF attacks;
             // it's explicitly disabled here because the form already has a CSRF token validated.
             return $security->logout(validateCsrfToken: false) ?? $this->redirectToRoute('homepage');
         }
 
+		error_log(sprintf('<<< Exiting changePassword($user=%s,$request=%s,$entityManager=%s,$security=%s)', is_scalar($user) ? $user : gettype($user), is_scalar($request) ? $request : gettype($request), is_scalar($entityManager) ? $entityManager : gettype($entityManager), is_scalar($security) ? $security : gettype($security)));
         return $this->render('user/change_password.html.twig', [
             'form' => $form,
         ]);

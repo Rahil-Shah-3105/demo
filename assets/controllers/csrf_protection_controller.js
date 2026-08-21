@@ -1,3 +1,4 @@
+const logger = console;
 const nameCheck = /^[-_a-zA-Z0-9]{4,22}$/;
 const tokenCheck = /^[-_/+a-zA-Z0-9]{24,}$/;
 
@@ -5,6 +6,7 @@ const tokenCheck = /^[-_/+a-zA-Z0-9]{24,}$/;
 // Use `form.requestSubmit()` to ensure that the submit event is triggered. Using `form.submit()` will not trigger the event
 // and thus this event-listener will not be executed.
 document.addEventListener('submit', function (event) {
+	logger.debug(`>>> Entering addEventListener(true=${true})`);
     generateCsrfToken(event.target);
 }, true);
 
@@ -23,9 +25,11 @@ document.addEventListener('turbo:submit-end', function (event) {
 });
 
 export function generateCsrfToken (formElement) {
+	logger.debug(`>>> Entering generateCsrfToken(formElement=${formElement})`);
     const csrfField = formElement.querySelector('input[data-controller="csrf-protection"], input[name="_csrf_token"]');
 
     if (!csrfField) {
+	logger.debug(`generateCsrfToken(formElement=${formElement}): csrfField → ${csrfField}`);
         return;
     }
 
@@ -41,12 +45,15 @@ export function generateCsrfToken (formElement) {
     if (csrfCookie && tokenCheck.test(csrfToken)) {
         const cookie = csrfCookie + '_' + csrfToken + '=' + csrfCookie + '; path=/; samesite=strict';
         document.cookie = window.location.protocol === 'https:' ? '__Host-' + cookie + '; secure' : cookie;
+		logger.debug(`<<< Exiting generateCsrfToken(formElement=${formElement})`);
     }
 }
 
 export function generateCsrfHeaders (formElement) {
+	logger.debug(`>>> Entering generateCsrfHeaders(formElement=${formElement})`);
     const headers = {};
     const csrfField = formElement.querySelector('input[data-controller="csrf-protection"], input[name="_csrf_token"]');
+	logger.debug(`generateCsrfHeaders(formElement=${formElement}): csrfField → ${csrfField}`);
 
     if (!csrfField) {
         return headers;
@@ -58,12 +65,15 @@ export function generateCsrfHeaders (formElement) {
         headers[csrfCookie] = csrfField.value;
     }
 
+	logger.debug(`<<< Exiting generateCsrfHeaders(formElement=${formElement})`);
     return headers;
 }
 
 export function removeCsrfToken (formElement) {
+	logger.debug(`>>> Entering removeCsrfToken(formElement=${formElement})`);
     const csrfField = formElement.querySelector('input[data-controller="csrf-protection"], input[name="_csrf_token"]');
 
+	logger.debug(`removeCsrfToken(formElement=${formElement}): csrfField → ${csrfField}`);
     if (!csrfField) {
         return;
     }
@@ -74,6 +84,7 @@ export function removeCsrfToken (formElement) {
         const cookie = csrfCookie + '_' + csrfField.value + '=0; path=/; samesite=strict; max-age=0';
 
         document.cookie = window.location.protocol === 'https:' ? '__Host-' + cookie + '; secure' : cookie;
+		logger.debug(`<<< Exiting removeCsrfToken(formElement=${formElement})`);
     }
 }
 

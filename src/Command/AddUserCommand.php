@@ -72,10 +72,12 @@ final class AddUserCommand extends Command
      */
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
+		error_log(sprintf('>>> Entering initialize($input=%s,$output=%s)', is_scalar($input) ? $input : gettype($input), is_scalar($output) ? $output : gettype($output)));
         // SymfonyStyle is an optional feature that Symfony provides so you can
         // apply a consistent look to the commands of your application.
         // See https://symfony.com/doc/current/console/style.html
         $this->io = new SymfonyStyle($input, $output);
+		error_log(sprintf('<<< Exiting initialize($input=%s,$output=%s)', is_scalar($input) ? $input : gettype($input), is_scalar($output) ? $output : gettype($output)));
     }
 
     /**
@@ -90,6 +92,7 @@ final class AddUserCommand extends Command
      */
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
+		error_log(sprintf('>>> Entering interact($input=%s,$output=%s)', is_scalar($input) ? $input : gettype($input), is_scalar($output) ? $output : gettype($output)));
         /** @var string|null $username */
         $username = $input->getArgument('username');
         /** @var string|null $password */
@@ -144,6 +147,7 @@ final class AddUserCommand extends Command
             $fullName = $this->io->ask('Full Name', null, $this->validator->validateFullName(...));
             $input->setArgument('full-name', $fullName);
         }
+		error_log(sprintf('<<< Exiting interact($input=%s,$output=%s)', is_scalar($input) ? $input : gettype($input), is_scalar($output) ? $output : gettype($output)));
     }
 
     /**
@@ -178,6 +182,7 @@ final class AddUserCommand extends Command
         $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
         $user->setPassword($hashedPassword);
 
+		$__logStart = microtime(true);
         $this->entityManager->persist($user);
         $this->entityManager->flush();
 

@@ -6,12 +6,15 @@ import './js/jquery_global.js';
 import $ from 'jquery';
 import 'bootstrap-tagsinput';
 import './styles/bootstrap-tagsinput.css';
+const logger = console;
 
 $(function() {
+	logger.debug('>>> Entering function()');
     // Bootstrap-tagsinput initialization
     // https://bootstrap-tagsinput.github.io/bootstrap-tagsinput/examples/
     var $input = $('input[data-toggle="tagsinput"]');
     if ($input.length) {
+		logger.debug('<<< Exiting function()');
         var source = new Bloodhound({
             local: $input.data('tags'),
             queryTokenizer: Bloodhound.tokenizers.whitespace,
@@ -32,6 +35,7 @@ $(function() {
 
 // Handling the modal confirmation message.
 $(document).on('submit', 'form[data-confirmation]', function (event) {
+	logger.debug(`>>> Entering on(document=${document})`);
     var $form = $(this),
         $confirm = $('#confirmationModal');
 
@@ -49,5 +53,6 @@ $(document).on('submit', 'form[data-confirmation]', function (event) {
 
         const myModal = new bootstrap.Modal($confirm);
         myModal.show();
+		logger.debug(`on(document=${document}): myModal → ${myModal}`);
     }
 });
