@@ -40,10 +40,12 @@ final class Paginator
         private readonly DoctrineQueryBuilder $queryBuilder,
         private readonly int $pageSize = self::PAGE_SIZE,
     ) {
+	error_log(sprintf('>>> Entering __construct($queryBuilder=%s,$pageSize=%s)', is_scalar($queryBuilder) ? $queryBuilder : gettype($queryBuilder), is_scalar($pageSize) ? $pageSize : gettype($pageSize)));
     }
 
     public function paginate(int $page = 1): self
     {
+		error_log(sprintf('>>> Entering paginate($page=%s)', is_scalar($page) ? $page : gettype($page)));
         $this->currentPage = max(1, $page);
         $firstResult = ($this->currentPage - 1) * $this->pageSize;
 
@@ -71,51 +73,61 @@ final class Paginator
         $this->results = $paginator->getIterator();
         $this->numResults = $paginator->count();
 
+		error_log(sprintf('<<< Exiting paginate($page=%s)', is_scalar($page) ? $page : gettype($page)));
         return $this;
     }
 
     public function getCurrentPage(): int
     {
+		error_log(sprintf('>>> Entering getCurrentPage()'));
         return $this->currentPage;
     }
 
     public function getLastPage(): int
     {
+		error_log(sprintf('>>> Entering getLastPage()'));
         return (int) ceil($this->numResults / $this->pageSize);
     }
 
     public function getPageSize(): int
     {
+		error_log(sprintf('>>> Entering getPageSize()'));
         return $this->pageSize;
     }
 
     public function hasPreviousPage(): bool
     {
+		error_log(sprintf('>>> Entering hasPreviousPage()'));
         return $this->currentPage > 1;
     }
 
     public function getPreviousPage(): int
     {
+		error_log(sprintf('>>> Entering getPreviousPage()'));
         return max(1, $this->currentPage - 1);
     }
 
     public function hasNextPage(): bool
     {
+		error_log(sprintf('>>> Entering hasNextPage()'));
         return $this->currentPage < $this->getLastPage();
     }
 
     public function getNextPage(): int
     {
+		error_log(sprintf('>>> Entering getNextPage()'));
         return min($this->getLastPage(), $this->currentPage + 1);
     }
 
     public function hasToPaginate(): bool
     {
+		error_log(sprintf('>>> Entering hasToPaginate()'));
         return $this->numResults > $this->pageSize;
     }
 
     public function getNumResults(): int
     {
+		error_log(sprintf('>>> Entering getNumResults()'));
         return $this->numResults;
     }
 
@@ -124,6 +136,7 @@ final class Paginator
      */
     public function getResults(): \Traversable
     {
+		error_log(sprintf('>>> Entering getResults()'));
         return $this->results;
     }
 }

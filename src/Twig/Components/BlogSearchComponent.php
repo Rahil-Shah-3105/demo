@@ -44,6 +44,7 @@ final class BlogSearchComponent
     public function __construct(
         private readonly PostRepository $postRepository,
     ) {
+	error_log(sprintf('>>> Entering __construct($postRepository=%s)', is_scalar($postRepository) ? $postRepository : gettype($postRepository)));
     }
 
     /**
@@ -51,6 +52,7 @@ final class BlogSearchComponent
      */
     public function getPosts(): array
     {
+		error_log(sprintf('>>> Entering getPosts()'));
         return $this->postRepository->findBySearchQuery($this->query);
     }
 }

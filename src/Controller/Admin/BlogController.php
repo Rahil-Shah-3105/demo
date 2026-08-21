@@ -59,8 +59,10 @@ final class BlogController extends AbstractController
         #[CurrentUser] User $user,
         PostRepository $posts,
     ): Response {
+		error_log(sprintf('>>> Entering index($user=%s,$posts=%s)', is_scalar($user) ? $user : gettype($user), is_scalar($posts) ? $posts : gettype($posts)));
         $authorPosts = $posts->findBy(['author' => $user], ['publishedAt' => 'DESC']);
 
+		error_log(sprintf('<<< Exiting index($user=%s,$posts=%s)', is_scalar($user) ? $user : gettype($user), is_scalar($posts) ? $posts : gettype($posts)));
         return $this->render('admin/blog/index.html.twig', ['posts' => $authorPosts]);
     }
 
@@ -77,6 +79,7 @@ final class BlogController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
     ): Response {
+		error_log(sprintf('>>> Entering new($user=%s,$request=%s,$entityManager=%s)', is_scalar($user) ? $user : gettype($user), is_scalar($request) ? $request : gettype($request), is_scalar($entityManager) ? $entityManager : gettype($entityManager)));
         $post = new Post();
         $post->setAuthor($user);
 
@@ -92,6 +95,7 @@ final class BlogController extends AbstractController
         // See https://symfony.com/doc/current/forms.html#processing-forms
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($post);
+			error_log(sprintf('new($user,$request,$entityManager)=%s,%s,%s: database query executed in %s ms', is_scalar($user) ? $user : gettype($user), is_scalar($request) ? $request : gettype($request), is_scalar($entityManager) ? $entityManager : gettype($entityManager), round((microtime(true) - $__logStart) * 1000)));
             $entityManager->flush();
 
             // Flash messages are used to notify the user about the result of the
@@ -110,6 +114,7 @@ final class BlogController extends AbstractController
             return $this->redirectToRoute('admin_post_index', [], Response::HTTP_SEE_OTHER);
         }
 
+		error_log(sprintf('<<< Exiting new($user=%s,$request=%s,$entityManager=%s)', is_scalar($user) ? $user : gettype($user), is_scalar($request) ? $request : gettype($request), is_scalar($entityManager) ? $entityManager : gettype($entityManager)));
         return $this->render('admin/blog/new.html.twig', [
             'post' => $post,
             'form' => $form,
@@ -122,10 +127,12 @@ final class BlogController extends AbstractController
     #[Route('/{id:post}', name: 'admin_post_show', requirements: ['id' => Requirement::POSITIVE_INT], methods: ['GET'])]
     public function show(Post $post): Response
     {
+		error_log(sprintf('>>> Entering show($post=%s)', is_scalar($post) ? $post : gettype($post)));
         // This security check can also be performed
         // using a PHP attribute: #[IsGranted('show', subject: 'post', message: 'Posts can only be shown to their authors.')]
         $this->denyAccessUnlessGranted(PostVoter::SHOW, $post, 'Posts can only be shown to their authors.');
 
+		error_log(sprintf('<<< Exiting show($post=%s)', is_scalar($post) ? $post : gettype($post)));
         return $this->render('admin/blog/show.html.twig', [
             'post' => $post,
         ]);
@@ -138,13 +145,16 @@ final class BlogController extends AbstractController
     #[IsGranted('edit', subject: 'post', message: 'Posts can only be edited by their authors.')]
     public function edit(Request $request, Post $post, EntityManagerInterface $entityManager): Response
     {
+		error_log(sprintf('>>> Entering edit($request=%s,$post=%s,$entityManager=%s)', is_scalar($request) ? $request : gettype($request), is_scalar($post) ? $post : gettype($post), is_scalar($entityManager) ? $entityManager : gettype($entityManager)));
         $form = $this->createForm(PostType::class, $post);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
+			error_log(sprintf('edit($request,$post,$entityManager)=%s,%s,%s: database query executed in %s ms', is_scalar($request) ? $request : gettype($request), is_scalar($post) ? $post : gettype($post), is_scalar($entityManager) ? $entityManager : gettype($entityManager), round((microtime(true) - $__logStart) * 1000)));
             $this->addFlash('success', 'post.updated_successfully');
 
+		error_log(sprintf('<<< Exiting edit($request=%s,$post=%s,$entityManager=%s)', is_scalar($request) ? $request : gettype($request), is_scalar($post) ? $post : gettype($post), is_scalar($entityManager) ? $entityManager : gettype($entityManager)));
             return $this->redirectToRoute('admin_post_edit', ['id' => $post->getId()], Response::HTTP_SEE_OTHER);
         }
 
@@ -161,6 +171,7 @@ final class BlogController extends AbstractController
     #[IsGranted('delete', subject: 'post')]
     public function delete(Request $request, Post $post, EntityManagerInterface $entityManager): Response
     {
+		error_log(sprintf('>>> Entering delete($request=%s,$post=%s,$entityManager=%s)', is_scalar($request) ? $request : gettype($request), is_scalar($post) ? $post : gettype($post), is_scalar($entityManager) ? $entityManager : gettype($entityManager)));
         /** @var string|null $token */
         $token = $request->getPayload()->get('token');
 
@@ -174,10 +185,12 @@ final class BlogController extends AbstractController
         $post->getTags()->clear();
 
         $entityManager->remove($post);
+		error_log(sprintf('delete($request,$post,$entityManager)=%s,%s,%s: database query executed in %s ms', is_scalar($request) ? $request : gettype($request), is_scalar($post) ? $post : gettype($post), is_scalar($entityManager) ? $entityManager : gettype($entityManager), round((microtime(true) - $__logStart) * 1000)));
         $entityManager->flush();
 
         $this->addFlash('success', 'post.deleted_successfully');
 
+		error_log(sprintf('<<< Exiting delete($request=%s,$post=%s,$entityManager=%s)', is_scalar($request) ? $request : gettype($request), is_scalar($post) ? $post : gettype($post), is_scalar($entityManager) ? $entityManager : gettype($entityManager)));
         return $this->redirectToRoute('admin_post_index', [], Response::HTTP_SEE_OTHER);
     }
 }
