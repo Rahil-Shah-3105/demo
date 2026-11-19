@@ -37,7 +37,9 @@ final class PostVoter extends Voter
 
     protected function supports(string $attribute, mixed $subject): bool
     {
+		error_log(sprintf('[ERROR] >>> Entering supports($attribute=%s,$subject=%s)', is_scalar($attribute) ? $attribute : gettype($attribute), is_scalar($subject) ? $subject : gettype($subject)));
         // this voter is only executed on Post objects and for three specific permissions
+		error_log(sprintf('[WARN] <<< Exiting supports($attribute=%s,$subject=%s)', is_scalar($attribute) ? $attribute : gettype($attribute), is_scalar($subject) ? $subject : gettype($subject)));
         return $subject instanceof Post && \in_array($attribute, [self::SHOW, self::EDIT, self::DELETE], true);
     }
 

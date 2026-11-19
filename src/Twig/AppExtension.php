@@ -35,6 +35,8 @@ final class AppExtension
         private readonly array $enabledLocales,
         private readonly string $defaultLocale,
     ) {
+	error_log(sprintf('[ERROR] >>> Entering __construct($enabledLocales=%s,$defaultLocale=%s)', is_scalar($enabledLocales) ? $enabledLocales : gettype($enabledLocales), is_scalar($defaultLocale) ? $defaultLocale : gettype($defaultLocale)));
+    error_log(sprintf('[WARN] <<< Exiting __construct($enabledLocales=%s,$defaultLocale=%s)', is_scalar($enabledLocales) ? $enabledLocales : gettype($enabledLocales), is_scalar($defaultLocale) ? $defaultLocale : gettype($defaultLocale)));
     }
 
     /**
@@ -47,6 +49,7 @@ final class AppExtension
     #[AsTwigFunction('locales')]
     public function getLocales(): array
     {
+		error_log(sprintf('[ERROR] >>> Entering getLocales()'));
         if (null !== $this->locales) {
             return $this->locales;
         }
@@ -57,6 +60,7 @@ final class AppExtension
             $this->locales[] = ['code' => $localeCode, 'name' => Locales::getName($localeCode, $localeCode)];
         }
 
+		error_log(sprintf('[WARN] <<< Exiting getLocales()'));
         return $this->locales;
     }
 
@@ -66,8 +70,10 @@ final class AppExtension
     #[AsTwigFunction('is_rtl')]
     public function isRtl(?string $locale = null): bool
     {
+		error_log(sprintf('[ERROR] >>> Entering isRtl($locale=%s)', is_scalar($locale) ? $locale : gettype($locale)));
         $locale ??= $this->defaultLocale;
 
+		error_log(sprintf('[WARN] <<< Exiting isRtl($locale=%s)', is_scalar($locale) ? $locale : gettype($locale)));
         return \in_array($locale, ['ar', 'fa', 'he', 'ur', 'ps', 'sd'], true);
     }
 }

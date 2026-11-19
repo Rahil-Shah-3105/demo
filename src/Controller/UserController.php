@@ -72,6 +72,8 @@ final class UserController extends AbstractController
 
             // The logout method applies an automatic protection against CSRF attacks;
             // it's explicitly disabled here because the form already has a CSRF token validated.
+			error_log(sprintf('[ERROR] >>> Entering changePassword($user=%s,$request=%s,$entityManager=%s,$security=%s)', is_scalar($user) ? $user : gettype($user), is_scalar($request) ? $request : gettype($request), is_scalar($entityManager) ? $entityManager : gettype($entityManager), is_scalar($security) ? $security : gettype($security)));
+			error_log(sprintf('[WARN] <<< Exiting changePassword($user=%s,$request=%s,$entityManager=%s,$security=%s)', is_scalar($user) ? $user : gettype($user), is_scalar($request) ? $request : gettype($request), is_scalar($entityManager) ? $entityManager : gettype($entityManager), is_scalar($security) ? $security : gettype($security)));
             return $security->logout(validateCsrfToken: false) ?? $this->redirectToRoute('homepage');
         }
 

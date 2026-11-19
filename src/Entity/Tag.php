@@ -35,30 +35,40 @@ class Tag implements \Stringable, \JsonSerializable
 
     public function __construct(string $name)
     {
+		error_log(sprintf('[ERROR] >>> Entering __construct($name=%s)', is_scalar($name) ? $name : gettype($name)));
         $this->name = $name;
+		error_log(sprintf('[WARN] <<< Exiting __construct($name=%s)', is_scalar($name) ? $name : gettype($name)));
     }
 
     public function getId(): ?int
     {
+		error_log(sprintf('[ERROR] >>> Entering getId()'));
+        error_log(sprintf('[WARN] <<< Exiting getId()'));
         return $this->id;
     }
 
     public function getName(): string
     {
+		error_log(sprintf('[ERROR] >>> Entering getName()'));
+        error_log(sprintf('[WARN] <<< Exiting getName()'));
         return $this->name;
     }
 
     public function jsonSerialize(): string
     {
+		error_log(sprintf('[ERROR] >>> Entering jsonSerialize()'));
         // This entity implements JsonSerializable (http://php.net/manual/en/class.jsonserializable.php)
         // so this method is used to customize its JSON representation when json_encode()
         // is called, for example in tags|json_encode (templates/form/fields.html.twig)
 
+		error_log(sprintf('[WARN] <<< Exiting jsonSerialize()'));
         return $this->name;
     }
 
     public function __toString(): string
     {
+		error_log(sprintf('[ERROR] >>> Entering __toString()'));
+        error_log(sprintf('[WARN] <<< Exiting __toString()'));
         return $this->name;
     }
 }

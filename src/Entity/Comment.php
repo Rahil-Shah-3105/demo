@@ -52,59 +52,81 @@ class Comment
 
     public function __construct()
     {
+		error_log(sprintf('[ERROR] >>> Entering __construct()'));
         $this->publishedAt = new \DateTimeImmutable();
+		error_log(sprintf('[WARN] <<< Exiting __construct()'));
     }
 
     #[Assert\IsTrue(message: 'comment.is_spam')]
     public function isLegitComment(): bool
     {
+		error_log(sprintf('[ERROR] >>> Entering isLegitComment()'));
         $containsInvalidCharacters = null !== u($this->content)->indexOf('@');
 
+		error_log(sprintf('[WARN] <<< Exiting isLegitComment()'));
         return !$containsInvalidCharacters;
     }
 
     public function getId(): ?int
     {
+		error_log(sprintf('[ERROR] >>> Entering getId()'));
+        error_log(sprintf('[WARN] <<< Exiting getId()'));
         return $this->id;
     }
 
     public function getContent(): ?string
     {
+		error_log(sprintf('[ERROR] >>> Entering getContent()'));
+        error_log(sprintf('[WARN] <<< Exiting getContent()'));
         return $this->content;
     }
 
     public function setContent(string $content): void
     {
+		error_log(sprintf('[ERROR] >>> Entering setContent($content=%s)', is_scalar($content) ? $content : gettype($content)));
         $this->content = $content;
+		error_log(sprintf('[WARN] <<< Exiting setContent($content=%s)', is_scalar($content) ? $content : gettype($content)));
     }
 
     public function getPublishedAt(): \DateTimeImmutable
     {
+		error_log(sprintf('[ERROR] >>> Entering getPublishedAt()'));
+        error_log(sprintf('[WARN] <<< Exiting getPublishedAt()'));
         return $this->publishedAt;
     }
 
     public function setPublishedAt(\DateTimeImmutable $publishedAt): void
     {
+		error_log(sprintf('[ERROR] >>> Entering setPublishedAt($publishedAt=%s)', is_scalar($publishedAt) ? $publishedAt : gettype($publishedAt)));
         $this->publishedAt = $publishedAt;
+		error_log(sprintf('[WARN] <<< Exiting setPublishedAt($publishedAt=%s)', is_scalar($publishedAt) ? $publishedAt : gettype($publishedAt)));
     }
 
     public function getAuthor(): ?User
     {
+		error_log(sprintf('[ERROR] >>> Entering getAuthor()'));
+        error_log(sprintf('[WARN] <<< Exiting getAuthor()'));
         return $this->author;
     }
 
     public function setAuthor(User $author): void
     {
+		error_log(sprintf('[ERROR] >>> Entering setAuthor($author=%s)', is_scalar($author) ? $author : gettype($author)));
         $this->author = $author;
+		error_log(sprintf('[WARN] <<< Exiting setAuthor($author=%s)', is_scalar($author) ? $author : gettype($author)));
     }
 
     public function getPost(): ?Post
     {
+		error_log(sprintf('[ERROR] >>> Entering getPost()'));
+        error_log(sprintf('[WARN] <<< Exiting getPost()'));
         return $this->post;
     }
 
     public function setPost(Post $post): void
     {
+		error_log(sprintf('[ERROR] >>> Entering setPost($post=%s)', is_scalar($post) ? $post : gettype($post)));
         $this->post = $post;
+		error_log(sprintf('[WARN] <<< Exiting setPost($post=%s)', is_scalar($post) ? $post : gettype($post)));
     }
 }

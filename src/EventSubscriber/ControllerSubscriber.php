@@ -28,10 +28,14 @@ final readonly class ControllerSubscriber implements EventSubscriberInterface
     public function __construct(
         private SourceCodeExtension $twigExtension,
     ) {
+	error_log(sprintf('[ERROR] >>> Entering __construct($twigExtension=%s)', is_scalar($twigExtension) ? $twigExtension : gettype($twigExtension)));
+    error_log(sprintf('[WARN] <<< Exiting __construct($twigExtension=%s)', is_scalar($twigExtension) ? $twigExtension : gettype($twigExtension)));
     }
 
     public static function getSubscribedEvents(): array
     {
+		error_log(sprintf('[ERROR] >>> Entering getSubscribedEvents()'));
+		error_log(sprintf('[WARN] <<< Exiting getSubscribedEvents()'));
         return [
             KernelEvents::CONTROLLER => 'registerCurrentController',
         ];
@@ -39,11 +43,13 @@ final readonly class ControllerSubscriber implements EventSubscriberInterface
 
     public function registerCurrentController(ControllerEvent $event): void
     {
+		error_log(sprintf('[ERROR] >>> Entering registerCurrentController($event=%s)', is_scalar($event) ? $event : gettype($event)));
         // this check is needed because in Symfony a request can perform any
         // number of sub-requests. See
         // https://symfony.com/doc/current/components/http_kernel.html#sub-requests
         if ($event->isMainRequest()) {
             $this->twigExtension->setController($event->getController());
         }
+		error_log(sprintf('[WARN] <<< Exiting registerCurrentController($event=%s)', is_scalar($event) ? $event : gettype($event)));
     }
 }

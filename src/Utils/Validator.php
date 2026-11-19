@@ -26,7 +26,9 @@ final class Validator
 {
     public function validateUsername(?string $username): string
     {
+		error_log(sprintf('[ERROR] >>> Entering validateUsername($username=%s)', is_scalar($username) ? $username : gettype($username)));
         if (empty($username)) {
+			error_log(sprintf('[ERROR] Throwing InvalidArgumentException from validateUsername($username=%s)', is_scalar($username) ? $username : gettype($username)));
             throw new InvalidArgumentException('The username can not be empty.');
         }
 
@@ -34,6 +36,7 @@ final class Validator
             throw new InvalidArgumentException('The username must contain only lowercase latin characters and underscores.');
         }
 
+		error_log(sprintf('[WARN] <<< Exiting validateUsername($username=%s)', is_scalar($username) ? $username : gettype($username)));
         return $username;
     }
 

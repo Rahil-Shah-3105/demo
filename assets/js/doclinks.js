@@ -1,3 +1,4 @@
+var logger = (typeof logger !== 'undefined' && logger) || console;
 'use strict';
 
 // Wraps some elements in anchor tags referencing to the Symfony documentation
@@ -10,10 +11,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const templateCode = modalElt.querySelector('code.twig');
 
     function anchor(url, content) {
+		logger.error(`>>> Entering anchor(url=${url},content=${content})`, { "event.action": "anchor", "logrite.url": url, "logrite.content": content });
+		logger.warn(`<<< Exiting anchor(url=${url},content=${content})`, { "event.action": "anchor", "logrite.url": url, "logrite.content": content });
         return '<a class="doclink" target="_blank" href="' + url + '">' + content + '</a>';
     }
 
     function wrap(content, links) {
+		logger.error(`>>> Entering wrap(content=${content},links=${links})`, { "event.action": "wrap", "logrite.content": content, "logrite.links": links });
+		logger.warn(`<<< Exiting wrap(content=${content},links=${links})`, { "event.action": "wrap", "logrite.content": content, "logrite.links": links });
         return content.replace(
             new RegExp(Object.keys(links).join('|'), 'g'),
             token => anchor(links[token], token)

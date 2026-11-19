@@ -33,14 +33,18 @@ final readonly class TagArrayToStringTransformer implements DataTransformerInter
     public function __construct(
         private TagRepository $tags,
     ) {
+	error_log(sprintf('[ERROR] >>> Entering __construct($tags=%s)', is_scalar($tags) ? $tags : gettype($tags)));
+    error_log(sprintf('[WARN] <<< Exiting __construct($tags=%s)', is_scalar($tags) ? $tags : gettype($tags)));
     }
 
     public function transform($tags): string
     {
+		error_log(sprintf('[ERROR] >>> Entering transform($tags=%s)', is_scalar($tags) ? $tags : gettype($tags)));
         // The value received is an array of Tag objects generated with
         // Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer::transform()
         // The value returned is a string that concatenates the string representation of those objects
 
+		error_log(sprintf('[WARN] <<< Exiting transform($tags=%s)', is_scalar($tags) ? $tags : gettype($tags)));
         return implode(',', $tags);
     }
 
@@ -51,6 +55,7 @@ final readonly class TagArrayToStringTransformer implements DataTransformerInter
      */
     public function reverseTransform($string): array
     {
+		error_log(sprintf('[ERROR] >>> Entering reverseTransform($string=%s)', is_scalar($string) ? $string : gettype($string)));
         if (null === $string || u($string)->isEmpty()) {
             return [];
         }
@@ -74,6 +79,7 @@ final readonly class TagArrayToStringTransformer implements DataTransformerInter
 
         // Return an array of tags to transform them back into a Doctrine Collection.
         // See Symfony\Bridge\Doctrine\Form\DataTransformer\CollectionToArrayTransformer::reverseTransform()
+		error_log(sprintf('[WARN] <<< Exiting reverseTransform($string=%s)', is_scalar($string) ? $string : gettype($string)));
         return $tags;
     }
 
@@ -84,12 +90,14 @@ final readonly class TagArrayToStringTransformer implements DataTransformerInter
      */
     private function trim(array $strings): array
     {
+		error_log(sprintf('[ERROR] >>> Entering trim($strings=%s)', is_scalar($strings) ? $strings : gettype($strings)));
         $result = [];
 
         foreach ($strings as $string) {
             $result[] = trim($string);
         }
 
+		error_log(sprintf('[WARN] <<< Exiting trim($strings=%s)', is_scalar($strings) ? $strings : gettype($strings)));
         return $result;
     }
 }

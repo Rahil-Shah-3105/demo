@@ -59,8 +59,11 @@ final class BlogController extends AbstractController
         #[CurrentUser] User $user,
         PostRepository $posts,
     ): Response {
+		error_log(sprintf('[ERROR] >>> Entering index($user=%s,$posts=%s)', is_scalar($user) ? $user : gettype($user), is_scalar($posts) ? $posts : gettype($posts)));
+        $__logStart = microtime(true);
         $authorPosts = $posts->findBy(['author' => $user], ['publishedAt' => 'DESC']);
 
+		error_log(sprintf('[WARN] <<< Exiting index($user=%s,$posts=%s)', is_scalar($user) ? $user : gettype($user), is_scalar($posts) ? $posts : gettype($posts)));
         return $this->render('admin/blog/index.html.twig', ['posts' => $authorPosts]);
     }
 

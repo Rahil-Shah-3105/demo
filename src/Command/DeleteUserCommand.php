@@ -63,19 +63,24 @@ final class DeleteUserCommand extends Command
         private readonly UserRepository $users,
         private readonly LoggerInterface $logger,
     ) {
+		$this->logger->error('>>> Entering __construct($entityManager={arg0},$validator={arg1},$users={arg2},$logger={arg3})', ['arg0' => $entityManager, 'arg1' => $validator, 'arg2' => $users, 'arg3' => $logger]);
         parent::__construct();
+		$this->logger->warning('<<< Exiting __construct($entityManager={arg0},$validator={arg1},$users={arg2},$logger={arg3})', ['arg0' => $entityManager, 'arg1' => $validator, 'arg2' => $users, 'arg3' => $logger]);
     }
 
     protected function initialize(InputInterface $input, OutputInterface $output): void
     {
+		$this->logger->error('>>> Entering initialize($input={arg0},$output={arg1})', ['arg0' => $input, 'arg1' => $output]);
         // SymfonyStyle is an optional feature that Symfony provides so you can
         // apply a consistent look to the commands of your application.
         // See https://symfony.com/doc/current/console/style.html
         $this->io = new SymfonyStyle($input, $output);
+		$this->logger->warning('<<< Exiting initialize($input={arg0},$output={arg1})', ['arg0' => $input, 'arg1' => $output]);
     }
 
     protected function interact(InputInterface $input, OutputInterface $output): void
     {
+		$this->logger->error('>>> Entering interact($input={arg0},$output={arg1})', ['arg0' => $input, 'arg1' => $output]);
         /** @var string|null $username */
         $username = $input->getArgument('username');
 
@@ -96,16 +101,19 @@ final class DeleteUserCommand extends Command
 
         $username = $this->io->ask('Username', null, $this->validator->validateUsername(...));
         $input->setArgument('username', $username);
+		$this->logger->warning('<<< Exiting interact($input={arg0},$output={arg1})', ['arg0' => $input, 'arg1' => $output]);
     }
 
     public function __invoke(#[Argument('The username of an existing user')] string $username): int
     {
+		$this->logger->error('>>> Entering __invoke($username={arg0})', ['arg0' => $username]);
         $username = $this->validator->validateUsername($username);
 
         /** @var User|null $user */
         $user = $this->users->findOneByUsername($username);
 
         if (null === $user) {
+			$this->logger->error('Throwing RuntimeException from __invoke($username={arg0})', ['arg0' => $username]);
             throw new RuntimeException(\sprintf('User with username "%s" not found.', $username));
         }
 
@@ -126,6 +134,7 @@ final class DeleteUserCommand extends Command
         // See https://symfony.com/doc/current/logging.html
         $this->logger->info('User "{username}" (ID: {id}, email: {email}) was successfully deleted.', ['username' => $userUsername, 'id' => $userId, 'email' => $userEmail]);
 
+		$this->logger->warning('<<< Exiting __invoke($username={arg0})', ['arg0' => $username]);
         return Command::SUCCESS;
     }
 }

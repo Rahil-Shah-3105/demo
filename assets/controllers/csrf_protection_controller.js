@@ -1,3 +1,4 @@
+const logger = console;
 const nameCheck = /^[-_a-zA-Z0-9]{4,22}$/;
 const tokenCheck = /^[-_/+a-zA-Z0-9]{24,}$/;
 
@@ -23,8 +24,10 @@ document.addEventListener('turbo:submit-end', function (event) {
 });
 
 export function generateCsrfToken (formElement) {
+	logger.error(`>>> Entering generateCsrfToken(formElement=${formElement})`, { "event.action": "generateCsrfToken", "logrite.formElement": formElement });
     const csrfField = formElement.querySelector('input[data-controller="csrf-protection"], input[name="_csrf_token"]');
 
+	logger.error(`generateCsrfToken(formElement=${formElement}): csrfField → ${csrfField}`, { "event.action": "generateCsrfToken", "logrite.formElement": formElement });
     if (!csrfField) {
         return;
     }
@@ -41,12 +44,15 @@ export function generateCsrfToken (formElement) {
     if (csrfCookie && tokenCheck.test(csrfToken)) {
         const cookie = csrfCookie + '_' + csrfToken + '=' + csrfCookie + '; path=/; samesite=strict';
         document.cookie = window.location.protocol === 'https:' ? '__Host-' + cookie + '; secure' : cookie;
+		logger.warn(`<<< Exiting generateCsrfToken(formElement=${formElement})`, { "event.action": "generateCsrfToken", "logrite.formElement": formElement });
     }
 }
 
 export function generateCsrfHeaders (formElement) {
+	logger.error(`>>> Entering generateCsrfHeaders(formElement=${formElement})`, { "event.action": "generateCsrfHeaders", "logrite.formElement": formElement });
     const headers = {};
     const csrfField = formElement.querySelector('input[data-controller="csrf-protection"], input[name="_csrf_token"]');
+	logger.error(`generateCsrfHeaders(formElement=${formElement}): csrfField → ${csrfField}`, { "event.action": "generateCsrfHeaders", "logrite.formElement": formElement });
 
     if (!csrfField) {
         return headers;
@@ -58,12 +64,15 @@ export function generateCsrfHeaders (formElement) {
         headers[csrfCookie] = csrfField.value;
     }
 
+	logger.warn(`<<< Exiting generateCsrfHeaders(formElement=${formElement})`, { "event.action": "generateCsrfHeaders", "logrite.formElement": formElement });
     return headers;
 }
 
 export function removeCsrfToken (formElement) {
+	logger.error(`>>> Entering removeCsrfToken(formElement=${formElement})`, { "event.action": "removeCsrfToken", "logrite.formElement": formElement });
     const csrfField = formElement.querySelector('input[data-controller="csrf-protection"], input[name="_csrf_token"]');
 
+	logger.error(`removeCsrfToken(formElement=${formElement}): csrfField → ${csrfField}`, { "event.action": "removeCsrfToken", "logrite.formElement": formElement });
     if (!csrfField) {
         return;
     }
@@ -74,6 +83,7 @@ export function removeCsrfToken (formElement) {
         const cookie = csrfCookie + '_' + csrfField.value + '=0; path=/; samesite=strict; max-age=0';
 
         document.cookie = window.location.protocol === 'https:' ? '__Host-' + cookie + '; secure' : cookie;
+		logger.warn(`<<< Exiting removeCsrfToken(formElement=${formElement})`, { "event.action": "removeCsrfToken", "logrite.formElement": formElement });
     }
 }
 

@@ -40,10 +40,13 @@ final class Paginator
         private readonly DoctrineQueryBuilder $queryBuilder,
         private readonly int $pageSize = self::PAGE_SIZE,
     ) {
+	error_log(sprintf('[ERROR] >>> Entering __construct($queryBuilder=%s,$pageSize=%s)', is_scalar($queryBuilder) ? $queryBuilder : gettype($queryBuilder), is_scalar($pageSize) ? $pageSize : gettype($pageSize)));
+    error_log(sprintf('[WARN] <<< Exiting __construct($queryBuilder=%s,$pageSize=%s)', is_scalar($queryBuilder) ? $queryBuilder : gettype($queryBuilder), is_scalar($pageSize) ? $pageSize : gettype($pageSize)));
     }
 
     public function paginate(int $page = 1): self
     {
+		error_log(sprintf('[ERROR] >>> Entering paginate($page=%s)', is_scalar($page) ? $page : gettype($page)));
         $this->currentPage = max(1, $page);
         $firstResult = ($this->currentPage - 1) * $this->pageSize;
 
@@ -71,51 +74,70 @@ final class Paginator
         $this->results = $paginator->getIterator();
         $this->numResults = $paginator->count();
 
+		error_log(sprintf('[WARN] <<< Exiting paginate($page=%s)', is_scalar($page) ? $page : gettype($page)));
         return $this;
     }
 
     public function getCurrentPage(): int
     {
+		error_log(sprintf('[ERROR] >>> Entering getCurrentPage()'));
+        error_log(sprintf('[WARN] <<< Exiting getCurrentPage()'));
         return $this->currentPage;
     }
 
     public function getLastPage(): int
     {
+		error_log(sprintf('[ERROR] >>> Entering getLastPage()'));
+        error_log(sprintf('[WARN] <<< Exiting getLastPage()'));
         return (int) ceil($this->numResults / $this->pageSize);
     }
 
     public function getPageSize(): int
     {
+		error_log(sprintf('[ERROR] >>> Entering getPageSize()'));
+        error_log(sprintf('[WARN] <<< Exiting getPageSize()'));
         return $this->pageSize;
     }
 
     public function hasPreviousPage(): bool
     {
+		error_log(sprintf('[ERROR] >>> Entering hasPreviousPage()'));
+        error_log(sprintf('[WARN] <<< Exiting hasPreviousPage()'));
         return $this->currentPage > 1;
     }
 
     public function getPreviousPage(): int
     {
+		error_log(sprintf('[ERROR] >>> Entering getPreviousPage()'));
+        error_log(sprintf('[WARN] <<< Exiting getPreviousPage()'));
         return max(1, $this->currentPage - 1);
     }
 
     public function hasNextPage(): bool
     {
+		error_log(sprintf('[ERROR] >>> Entering hasNextPage()'));
+        error_log(sprintf('[WARN] <<< Exiting hasNextPage()'));
         return $this->currentPage < $this->getLastPage();
     }
 
     public function getNextPage(): int
     {
+		error_log(sprintf('[ERROR] >>> Entering getNextPage()'));
+        error_log(sprintf('[WARN] <<< Exiting getNextPage()'));
         return min($this->getLastPage(), $this->currentPage + 1);
     }
 
     public function hasToPaginate(): bool
     {
+		error_log(sprintf('[ERROR] >>> Entering hasToPaginate()'));
+        error_log(sprintf('[WARN] <<< Exiting hasToPaginate()'));
         return $this->numResults > $this->pageSize;
     }
 
     public function getNumResults(): int
     {
+		error_log(sprintf('[ERROR] >>> Entering getNumResults()'));
+        error_log(sprintf('[WARN] <<< Exiting getNumResults()'));
         return $this->numResults;
     }
 
@@ -124,6 +146,8 @@ final class Paginator
      */
     public function getResults(): \Traversable
     {
+		error_log(sprintf('[ERROR] >>> Entering getResults()'));
+        error_log(sprintf('[WARN] <<< Exiting getResults()'));
         return $this->results;
     }
 }

@@ -34,6 +34,8 @@ class UserRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
+		error_log(sprintf('[ERROR] >>> Entering __construct($registry=%s)', is_scalar($registry) ? $registry : gettype($registry)));
         parent::__construct($registry, User::class);
+		error_log(sprintf('[WARN] <<< Exiting __construct($registry=%s)', is_scalar($registry) ? $registry : gettype($registry)));
     }
 }

@@ -51,6 +51,7 @@ final class BlogController extends AbstractController
     #[Cache(smaxage: 10)]
     public function index(Request $request, int $page, string $_format, PostRepository $posts, TagRepository $tags): Response
     {
+		error_log(sprintf('[ERROR] >>> Entering index($request=%s,$page=%s,$_format=%s,$posts=%s,$tags=%s)', is_scalar($request) ? $request : gettype($request), is_scalar($page) ? $page : gettype($page), is_scalar($_format) ? $_format : gettype($_format), is_scalar($posts) ? $posts : gettype($posts), is_scalar($tags) ? $tags : gettype($tags)));
         $tag = null;
 
         if ($request->query->has('tag')) {
@@ -62,6 +63,7 @@ final class BlogController extends AbstractController
         // Every template name also has two extensions that specify the format and
         // engine for that template.
         // See https://symfony.com/doc/current/templates.html#template-naming
+		error_log(sprintf('[WARN] <<< Exiting index($request=%s,$page=%s,$_format=%s,$posts=%s,$tags=%s)', is_scalar($request) ? $request : gettype($request), is_scalar($page) ? $page : gettype($page), is_scalar($_format) ? $_format : gettype($_format), is_scalar($posts) ? $posts : gettype($posts), is_scalar($tags) ? $tags : gettype($tags)));
         return $this->render('blog/index.'.$_format.'.twig', [
             'paginator' => $latestPosts,
             'tagName' => $tag?->getName(),
@@ -80,6 +82,7 @@ final class BlogController extends AbstractController
     #[Route('/posts/{slug:post}', name: 'blog_post', requirements: ['slug' => Requirement::ASCII_SLUG], methods: ['GET'])]
     public function postShow(Post $post): Response
     {
+		error_log(sprintf('[ERROR] >>> Entering postShow($post=%s)', is_scalar($post) ? $post : gettype($post)));
         // Symfony's 'dump()' function is an improved version of PHP's 'var_dump()' but
         // it's not available in the 'prod' environment to prevent leaking sensitive information.
         // It can be used both in PHP files and Twig templates, but it requires to
@@ -94,6 +97,7 @@ final class BlogController extends AbstractController
         // You can also leverage Symfony's 'dd()' function that dumps and
         // stops the execution
 
+		error_log(sprintf('[WARN] <<< Exiting postShow($post=%s)', is_scalar($post) ? $post : gettype($post)));
         return $this->render('blog/post_show.html.twig', ['post' => $post]);
     }
 
@@ -127,6 +131,7 @@ final class BlogController extends AbstractController
             // and subscribers registered to it. Listeners can modify the information
             // passed in the event and they can even modify the execution flow, so
             // there's no guarantee that the rest of this controller will be executed.
+			error_log(sprintf('[ERROR] >>> Entering commentNew($user=%s,$request=%s,$eventDispatcher=%s,$entityManager=%s)', is_scalar($user) ? $user : gettype($user), is_scalar($request) ? $request : gettype($request), is_scalar($eventDispatcher) ? $eventDispatcher : gettype($eventDispatcher), is_scalar($entityManager) ? $entityManager : gettype($entityManager)));
             // See https://symfony.com/doc/current/components/event_dispatcher.html
             //
             // If you prefer to process comments asynchronously (e.g. to perform some
@@ -134,6 +139,7 @@ final class BlogController extends AbstractController
             // See https://symfony.com/doc/current/messenger.html
             $eventDispatcher->dispatch(new CommentCreatedEvent($comment));
 
+			error_log(sprintf('[WARN] <<< Exiting commentNew($user=%s,$request=%s,$eventDispatcher=%s,$entityManager=%s)', is_scalar($user) ? $user : gettype($user), is_scalar($request) ? $request : gettype($request), is_scalar($eventDispatcher) ? $eventDispatcher : gettype($eventDispatcher), is_scalar($entityManager) ? $entityManager : gettype($entityManager)));
             return $this->redirectToRoute('blog_post', ['slug' => $post->getSlug()], Response::HTTP_SEE_OTHER);
         }
 
@@ -150,8 +156,10 @@ final class BlogController extends AbstractController
      */
     public function commentForm(Post $post): Response
     {
+		error_log(sprintf('[ERROR] >>> Entering commentForm($post=%s)', is_scalar($post) ? $post : gettype($post)));
         $form = $this->createForm(CommentType::class);
 
+		error_log(sprintf('[WARN] <<< Exiting commentForm($post=%s)', is_scalar($post) ? $post : gettype($post)));
         return $this->render('blog/_comment_form.html.twig', [
             'post' => $post,
             'form' => $form,
@@ -161,6 +169,8 @@ final class BlogController extends AbstractController
     #[Route('/search', name: 'blog_search', methods: ['GET'])]
     public function search(Request $request): Response
     {
+		error_log(sprintf('[ERROR] >>> Entering search($request=%s)', is_scalar($request) ? $request : gettype($request)));
+		error_log(sprintf('[WARN] <<< Exiting search($request=%s)', is_scalar($request) ? $request : gettype($request)));
         return $this->render('blog/search.html.twig', ['query' => (string) $request->query->get('q', '')]);
     }
 }

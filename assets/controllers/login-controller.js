@@ -1,3 +1,4 @@
+const logger = console;
 // A Stimulus JavaScript controller file
 // https://stimulus.hotwired.dev
 // @see templates/security/login.html.twig
@@ -17,20 +18,26 @@ export default class extends Controller {
   // but for the demo application, it's very convenient to do so
 
   prefillJohnUser() {
+	logger.error('>>> Entering prefillJohnUser()', { "event.action": "prefillJohnUser" });
     this.usernameTarget.value = 'john_user'
     this.passwordTarget.value = 'kitten'
+	logger.warn('<<< Exiting prefillJohnUser()', { "event.action": "prefillJohnUser" });
   }
 
   prefillJaneAdmin() {
+	logger.error('>>> Entering prefillJaneAdmin()', { "event.action": "prefillJaneAdmin" });
     this.usernameTarget.value = 'jane_admin'
     this.passwordTarget.value = 'kitten'
+	logger.warn('<<< Exiting prefillJaneAdmin()', { "event.action": "prefillJaneAdmin" });
   }
 
   togglePasswordInputType() {
+	logger.error('>>> Entering togglePasswordInputType()', { "event.action": "togglePasswordInputType" });
     if ('password' === this.passwordTarget.type) {
       this.passwordTarget.type = 'text'
     } else {
       this.passwordTarget.type = 'password'
+	logger.warn('<<< Exiting togglePasswordInputType()', { "event.action": "togglePasswordInputType" });
     }
   }
 }

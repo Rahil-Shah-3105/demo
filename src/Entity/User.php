@@ -65,6 +65,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getId(): ?int
     {
+		error_log(sprintf('[ERROR] >>> Entering getId()'));
+        error_log(sprintf('[WARN] <<< Exiting getId()'));
         return $this->id;
     }
 
@@ -75,26 +77,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getFullName(): ?string
     {
+		error_log(sprintf('[ERROR] >>> Entering getFullName()'));
+        error_log(sprintf('[WARN] <<< Exiting getFullName()'));
         return $this->fullName;
     }
 
     public function getUserIdentifier(): string
     {
+		error_log(sprintf('[ERROR] >>> Entering getUserIdentifier()'));
+        error_log(sprintf('[WARN] <<< Exiting getUserIdentifier()'));
         return (string) $this->username;
     }
 
     public function getUsername(): string
     {
+		error_log(sprintf('[ERROR] >>> Entering getUsername()'));
+        error_log(sprintf('[WARN] <<< Exiting getUsername()'));
         return $this->getUserIdentifier();
     }
 
     public function setUsername(string $username): void
     {
+		error_log(sprintf('[ERROR] >>> Entering setUsername($username=%s)', is_scalar($username) ? $username : gettype($username)));
         $this->username = $username;
+		error_log(sprintf('[WARN] <<< Exiting setUsername($username=%s)', is_scalar($username) ? $username : gettype($username)));
     }
 
     public function getEmail(): ?string
     {
+		error_log(sprintf('[ERROR] >>> Entering getEmail()'));
+        error_log(sprintf('[WARN] <<< Exiting getEmail()'));
         return $this->email;
     }
 
@@ -105,6 +117,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getPassword(): ?string
     {
+		error_log(sprintf('[ERROR] >>> Entering getPassword()'));
+        error_log(sprintf('[WARN] <<< Exiting getPassword()'));
         return $this->password;
     }
 
@@ -118,6 +132,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
+		error_log(sprintf('[ERROR] >>> Entering getRoles()'));
         $roles = $this->roles;
 
         // guarantees that a user always has at least one role for security
@@ -125,6 +140,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $roles[] = self::ROLE_USER;
         }
 
+		error_log(sprintf('[WARN] <<< Exiting getRoles()'));
         return array_unique($roles);
     }
 
@@ -133,7 +149,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function setRoles(array $roles): void
     {
+		error_log(sprintf('[ERROR] >>> Entering setRoles($roles=%s)', is_scalar($roles) ? $roles : gettype($roles)));
         $this->roles = $roles;
+		error_log(sprintf('[WARN] <<< Exiting setRoles($roles=%s)', is_scalar($roles) ? $roles : gettype($roles)));
     }
 
     /**
@@ -143,8 +161,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials(): void
     {
+		error_log(sprintf('[ERROR] >>> Entering eraseCredentials()'));
         // if you had a plainPassword property, you'd nullify it here
         // $this->plainPassword = null;
+		error_log(sprintf('[WARN] <<< Exiting eraseCredentials()'));
     }
 
     /**
@@ -152,6 +172,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function __serialize(): array
     {
+		error_log(sprintf('[ERROR] >>> Entering __serialize()'));
+        error_log(sprintf('[WARN] <<< Exiting __serialize()'));
         return [$this->id, $this->username, $this->password];
     }
 
@@ -160,6 +182,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function __unserialize(array $data): void
     {
+		error_log(sprintf('[ERROR] >>> Entering __unserialize($data=%s)', is_scalar($data) ? $data : gettype($data)));
         [$this->id, $this->username, $this->password] = $data;
+		error_log(sprintf('[WARN] <<< Exiting __unserialize($data=%s)', is_scalar($data) ? $data : gettype($data)));
     }
 }
